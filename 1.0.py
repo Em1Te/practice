@@ -180,7 +180,85 @@ while True:
 Возьмите код и задание (Рыцарь и дракон) из предыдущей практики и реализуйте его с применением классов
 """
 
+import random
 
+
+class Character:
+    def __init__(self, name, health, damage):
+        self.name = name
+        self.health = health
+        self.damage = damage
+
+    def attack(self):
+        return random.randint(int(self.damage * 0.8), int(self.damage * 1.2))
+
+    def take_damage(self, damage):
+        self.health -= damage
+        return damage
+
+    def is_alive(self):
+        return self.health > 0
+
+
+class Knight(Character):
+    def __init__(self, name, armor, damage):
+        Character.__init__(self, name, health=100, damage=damage)
+        self.armor = armor
+        self.weapon = 'Алмазный меч'
+
+    def take_damage(self, damage):
+        reduced_damage = max(damage - self.armor, 0)
+        self.health -= reduced_damage
+        return reduced_damage
+
+
+class Dragon(Character):
+    def __init__(self):
+        Character.__init__(self, name='Бульбазавр', health=150, damage=20)
+
+
+class Battle:
+    def __init__(self, knight, dragon):
+        self.knight = knight
+        self.dragon = dragon
+
+    def start(self):
+        print(f'{self.knight.name} отправляется в опасное путешествие, чтобы победить {self.dragon.name} и освободить прекрасную принцессу Потату.')
+        print(f'{self.knight.name} встретил {self.dragon.name} на своем пути, и началась битва!')
+
+        while self.knight.is_alive() and self.dragon.is_alive():
+            knight_damage = self.knight.attack()
+            print(f'{self.knight.name} атакует {self.dragon.name} и наносит {knight_damage} урона.')
+            self.dragon.take_damage(knight_damage)
+
+            if not self.dragon.is_alive():
+                print(f'{self.dragon.name} повержен. {self.knight.name} победил и освободил Потату!')
+                break
+
+            dragon_damage = self.dragon.attack()
+            print(f'{self.dragon.name} атакует {self.knight.name} и наносит {dragon_damage} урона.')
+            reduced_damage = self.knight.take_damage(dragon_damage)
+            print(f'{self.knight.name} блокировал {dragon_damage - reduced_damage} урона своей броней.')
+
+            if not self.knight.is_alive():
+                print(f'{self.knight.name} погиб! {self.dragon.name} победил!')
+                break
+
+
+def main():
+    knight_name = input('Введите имя рыцаря: ')
+    knight_armor = int(input('Введите уровень брони: '))
+    knight_damage = int(input('Введите урон (10-20): '))
+    knight = Knight(name=knight_name, armor=knight_armor, damage=knight_damage)
+
+    dragon = Dragon()
+
+    battle = Battle(knight, dragon)
+    battle.start()
+
+
+if __name__ == '__main__':
+    main()
 
 """# Дополнительное задание
 
@@ -216,4 +294,3 @@ while True:
      - Список доступных книг
      - Выйти из программы
 """
-
