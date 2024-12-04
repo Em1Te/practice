@@ -93,7 +93,6 @@ car = Car()
 bus = Bus()
 subway = Subway()
 
-    # Вызываем метод description для каждого объекта
 print(car.description())
 print(bus.description())
 print(subway.description())
@@ -256,7 +255,7 @@ class Mission:
         collected_resources = random.randint(1, 5)
         self.fuel += collected_fuel
         if self.fuel > 100:
-            self.fuel = 100  # Ограничение на топливо
+            self.fuel = 100
         return collected_fuel, collected_resources
 
 
@@ -280,43 +279,38 @@ def play_game():
 
         action = input("\nЧто вы хотите сделать?\n1) Собрать ресурсы и топливо\n2) Заправить корабль\n3) Отремонтировать корабль\n4) Продолжить миссию\n5) Выйти\nВведите номер действия: ")
 
-        # Снимаем топливо за каждое действие
         if spaceship.fuel <= 0:
             print("У вас закончилось топливо.")
             break
 
         if action == '1':
             collected_fuel, collected_resources = spaceship.collect_resources()
-            spaceship.fuel -= 10  # Снимаем топливо за сбор
+            spaceship.fuel -= 10
             print(f'Вы собрали {collected_fuel} топлива и {collected_resources} ресурсов. Топливо теперь = {spaceship.fuel}')
         elif action == '2':
             print(spaceship.fill_up())
-            spaceship.fuel -= 5  # Снимаем топливо за заправку
+            spaceship.fuel -= 5
         elif action == '3':
             resources_for_repair = int(input("Введите количество ресурсов для ремонта: "))
-            spaceship.fuel -= 5  # Снимаем топливо за ремонт
+            spaceship.fuel -= 5
             print(spaceship.repair(resources_for_repair))
         elif action == '4':
-            # Случайное событие
             event = random.choice(mission.events)
             mission.encounter_event(event, spaceship)
-            spaceship.fuel -= 10  # Снимаем топливо за продолжение миссии
+            spaceship.fuel -= 10
         elif action == '5':
             print("Выход из игры.")
             break
         else:
             print("Некорректный выбор. Попробуйте снова.")
 
-        # Случайное событие после каждого действия
         event = random.choice(mission.events)
         mission.encounter_event(event, spaceship)
 
-        # Проверка на состояние корабля и завершение игры
         if spaceship.hull <= 0 or spaceship.fuel <= 0:
             print("Корабль не может продолжать миссию. Игра завершена.")
             break
 
-# Запуск игры
 play_game()
 
 """# Дополнительно:
